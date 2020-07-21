@@ -1,0 +1,76 @@
+using DataFrames
+
+
+world_state=DataFrame(Block=[],state=[])
+world_goal=DataFrame(Block=[],state=[])
+function simple_Planner()
+print("\n/////////////////////////////////////")
+print("\n// SETTING UP WORLD CONFIGURATION  ///")
+print("\n///                               ///")
+print("\n/////////////////////////////////////")
+print("\nNUMBER OF BLOCK:\n")
+numberOfBlocks=parse(Int,readline())
+for a in 1:numberOfBlocks
+print(" \nBLOCK NAME:\n")
+block=readline()
+print("\nSPECIFY BLOCK STATE\n")
+state=readline()
+push!(world_state,(block,state))
+end
+
+print("\n/////////////////////////////////////")
+print("\n///                               ///")
+print("\n/// SETTING UP WORLD GOAL STATE   ///")
+print("\n///                               ///")
+print("\n/////////////////////////////////////")
+
+for b in 1:numberOfBlocks
+    print(" \nSPECIFY BLOCK:\n")
+    block=readline()
+    print("\nSPECIFY BLOCK GOAL STATE:\n")
+    state=readline()
+    push!(world_goal,(block,state))
+
+end
+
+print("\nAgent's Action Plan")
+for c in 1:numberOfBlocks
+if world_goal[!,2][c]!=world_state[!,2][c]&& length(world_state[!,2][c])<11
+    world_block=world_state[!,1][c]
+    print("\n put $world_block on table")
+end
+end
+for d in 1:numberOfBlocks
+if length(world_goal[!,2][d])<11
+    world_block=world_goal[!,2][d]
+    print("\n Put $world_block")
+end
+end
+
+print("\nACTION PRECONDITIONs")
+for d in 1:numberOfBlocks
+if length(world_goal[!,2][d])<9
+    world_block=world_goal[!,1][d]
+    print("\n Clear $world_block")
+end
+end
+
+for d in 1:numberOfBlocks
+if length(world_goal[!,2][d])<12
+    world_block=world_goal[!,1][d]
+    print("\n  OnTable($world_block)")
+end
+end
+print("\nAgent's Delete Set")
+for d in 1:numberOfBlocks
+if length(world_state[!,2][d])<9
+    world_block=world_state[!,2][d]
+    print("\n  $world_block")
+end
+end
+print("\nNEW WORLD STATE \n")
+for d in 1:numberOfBlocks
+world_state[!,2][d]=world_goal[!,2][d]
+end
+world_state
+end###END OF FUNCTION
